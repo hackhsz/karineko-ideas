@@ -1,0 +1,32 @@
+name: Suggest an idea
+description: Share a post or video Karineko could learn from. It appears on the Idea Board the next morning.
+title: "Idea: "
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: "Give the idea a short name in the title above, then paste the link."
+  - type: input
+    id: link
+    attributes:
+      label: Link to the post or video
+      placeholder: "https://www.tiktok.com/@…/video/…"
+    validations:
+      required: true
+  - type: dropdown
+    id: about
+    attributes:
+      label: What is it about?
+      options: [Jewellery, Beauty, Cosmetics, Fashion, Behind the scenes]
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it work?
+      placeholder: "The hook, the pacing, the reveal, the sound, the comments…"
+  - type: textarea
+    id: ours
+    attributes:
+      label: How could Karineko do its own version?
+      placeholder: "With which pieces, in what setting…"

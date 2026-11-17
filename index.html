@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Karineko Idea Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* The public, read-only copy of the Karineko Idea Board: today's videos, then the saved ideas.
+   Karineko's own system (Newsreader + Instrument Sans, paper / sumi / one green). */
+:root{
+  --paper:#FAF8F3; --card:#FFFFFF; --mid:#F4F0E8; --rule:#DDD6C8;
+  --ink:#1C1B18; --nezu:#5F5B52; --green:#2F5B45; --green-soft:#E3ECE6;
+  --tiktok:#1C1B18; --threads:#1C1B18; --ig:#8A3A5C; --xhs:#B4303A; --pin:#A33B2E; --yt:#9A3B2E; --other:#5F5B52;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,"PingFang SC",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#171613; --card:#201F1B; --mid:#26241F; --rule:#3A3731; --ink:#EDE9E0; --nezu:#A8A296;
+  --green:#7DB596; --green-soft:#24342B; --ig:#D98AAB; --xhs:#E57C82; --pin:#E08A7A; --yt:#E08A7A; --other:#A8A296; --tiktok:#EDE9E0; --threads:#EDE9E0;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#171613; --card:#201F1B; --mid:#26241F; --rule:#3A3731; --ink:#EDE9E0; --nezu:#A8A296;
+  --green:#7DB596; --green-soft:#24342B; --ig:#D98AAB; --xhs:#E57C82; --pin:#E08A7A; --yt:#E08A7A; --other:#A8A296; --tiktok:#EDE9E0; --threads:#EDE9E0;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--nezu);margin:0}
+.mast{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px;border-bottom:1px solid var(--rule);padding-bottom:20px}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(34px,5vw,52px);line-height:1.02;margin:6px 0 8px;text-wrap:balance}
+.lede{margin:0;color:var(--nezu);max-width:58ch}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:2px;background:var(--green);color:var(--paper);padding:12px 20px;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.btn:hover{opacity:.9}
+.suggest{display:grid;gap:6px;justify-items:start}
+.suggest small{font-size:12px;color:var(--nezu)}
+.sec-title{font-family:var(--serif);font-weight:300;font-size:clamp(26px,3.4vw,34px);line-height:1.1;margin:4px 0 0}
+.chip{border:1px solid var(--rule);background:var(--card);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;line-height:1.3}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* today's videos */
+.feed{padding:24px 0 28px;border-bottom:1px solid var(--rule)}
+.feed-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px}
+.days{display:flex;flex-wrap:wrap;gap:6px}
+.feed-note{font-size:13px;color:var(--nezu);margin:8px 0 0}
+.reel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px 14px;margin-top:16px}
+@media (max-width:440px){.reel{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}}
+.vid{min-width:0;display:flex;flex-direction:column;gap:7px}
+.vid-link{position:relative;display:block;aspect-ratio:9/16;border-radius:4px;overflow:hidden;background:var(--mid);border:1px solid var(--rule)}
+.vid-link img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+.vid[data-p="pinterest"] .vid-link img{object-fit:contain}
+.vid-link:hover img{transform:scale(1.03)}
+.vid-link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(transparent,rgba(0,0,0,.5));pointer-events:none}
+.vid-link.text{display:flex;flex-direction:column;justify-content:center;padding:46px 14px 40px;background:var(--card);text-decoration:none}
+.vid-link.text::after{display:none}
+.vid-quote{margin:0;font-family:var(--serif);font-weight:300;font-size:17px;line-height:1.38;display:-webkit-box;-webkit-line-clamp:9;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.vid-quote::before{content:"“"} .vid-quote::after{content:"”"}
+.vid-badge{position:absolute;left:8px;top:8px;z-index:1;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:3px 7px;border-radius:2px;background:rgba(28,27,24,.8);color:#FAF8F3}
+.vid-play{position:absolute;right:8px;top:8px;z-index:1;width:26px;height:26px;border-radius:50%;background:rgba(28,27,24,.6);display:grid;place-items:center}
+.vid-play::before{content:"";margin-left:2px;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent #FAF8F3}
+.vid-views{position:absolute;left:8px;bottom:8px;z-index:1;font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.vid-title{margin:0;font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.vid-by{margin:0;font-size:12px;color:var(--nezu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reel-empty{grid-column:1/-1;border:1px dashed var(--rule);border-radius:4px;padding:28px 20px;text-align:center;color:var(--nezu);font-size:14px}
+
+/* ideas */
+.ideas-head{padding-top:26px}
+.bar{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;padding:18px 0;border-bottom:1px solid var(--rule)}
+.group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.group .eyebrow{margin-right:4px}
+.search{flex:1 1 220px;min-width:0;display:flex}
+.search input{width:100%;border:0;border-bottom:1px solid var(--rule);background:transparent;padding:8px 2px;font-size:15px}
+.count{font-size:13px;color:var(--nezu);margin:16px 0 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-top:14px}
+@media (max-width:360px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:4px;display:flex;flex-direction:column;min-width:0}
+.shot{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-bottom:1px solid var(--rule);background:var(--mid);border-radius:4px 4px 0 0}
+.body{padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px;min-width:0;flex:1}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.plat{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:3px 8px;border-radius:2px;border:1px solid currentColor}
+.plat[data-p="tiktok"]{color:var(--tiktok)} .plat[data-p="threads"]{color:var(--threads)} .plat[data-p="instagram"]{color:var(--ig)}
+.plat[data-p="xiaohongshu"]{color:var(--xhs)} .plat[data-p="pinterest"]{color:var(--pin)} .plat[data-p="youtube"]{color:var(--yt)} .plat[data-p="other"]{color:var(--other)}
+.tag{font-size:12px;color:var(--nezu)}
+.tag::before{content:"·";margin-right:6px}
+.card h2{font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+.hook{margin:0;font-family:var(--serif);font-style:italic;font-weight:300;font-size:17px;line-height:1.4;overflow-wrap:anywhere}
+.hook::before{content:"“"} .hook::after{content:"”"}
+dl{margin:0;display:grid;gap:8px}
+dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--nezu)}
+dd{margin:2px 0 0;overflow-wrap:anywhere}
+.src{font-size:12.5px;color:var(--nezu);overflow-wrap:anywhere;margin:0}
+.src a{text-underline-offset:2px}
+.brief{background:var(--green-soft);border-radius:4px;padding:12px 14px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.brief .eyebrow{display:block;margin-bottom:6px;color:var(--green)}
+.foot{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;border-top:1px solid var(--rule);padding:12px 16px;font-size:12px;color:var(--nezu)}
+.empty{border:1px dashed var(--rule);border-radius:4px;padding:36px 24px;text-align:center;margin-top:18px;color:var(--nezu)}
+.updated{font-size:12px;color:var(--nezu);margin:36px 0 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <p class="eyebrow">Karineko Vintage · content</p>
+      <h1>Idea Board</h1>
+      <p class="lede">Fresh jewellery and beauty videos every morning, plus the posts the team has saved to borrow from.</p>
+    </div>
+    <div class="suggest">
+      <a class="btn" href="https://github.com/hackhsz/karineko-ideas/issues/new?template=idea.yml" target="_blank" rel="noopener">+ Suggest an idea</a>
+      <small>Needs a free GitHub account. It shows up here the next morning.</small>
+    </div>
+  </header>
+
+  <section class="feed" aria-labelledby="feedTitle">
+    <div class="feed-head">
+      <div>
+        <p class="eyebrow">New every morning · TikTok, YouTube Shorts, Pinterest, Threads</p>
+        <h2 class="sec-title" id="feedTitle">Today's videos</h2>
+      </div>
+      <div class="days" id="days" role="group" aria-label="Pick a day"></div>
+    </div>
+    <p class="feed-note" id="feedNote">Loading the videos…</p>
+    <div class="reel" id="reel"></div>
+  </section>
+
+  <div class="ideas-head">
+    <p class="eyebrow">Saved by the team</p>
+    <h2 class="sec-title">Ideas</h2>
+  </div>
+  <section class="bar" aria-label="Filters">
+    <div class="group" id="fPlat"><span class="eyebrow">From</span></div>
+    <div class="group" id="fCat"><span class="eyebrow">About</span></div>
+    <div class="search"><input id="q" type="search" placeholder="Search ideas, hooks, tags…" aria-label="Search ideas"></div>
+  </section>
+  <p class="count" id="count">Loading the ideas…</p>
+  <div class="grid" id="grid"></div>
+  <p class="updated" id="updated"></p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var PLATFORMS = [["tiktok","TikTok"],["threads","Threads"],["instagram","Instagram"],["xiaohongshu","小红书"],["pinterest","Pinterest"],["youtube","YouTube"],["other","Other"]];
+  var CATEGORIES = [["jewellery","Jewellery"],["beauty","Beauty"],["cosmetics","Cosmetics"],["fashion","Fashion"],["business","Behind the scenes"]];
+  var FORMATS = [["video","Short video"],["carousel","Carousel"],["photo","Photo"],["text","Text post"],["story","Story"],["live","Live"],["pin","Pin"],["post","Post"]];
+  var STATUSES = {"new":"New","try":"Want to try","planned":"Planned","posted":"Posted"};
+  var label = function(list, v){ for (var i=0;i<list.length;i++) if (list[i][0]===v) return list[i][1]; return v || ""; };
+  var $ = function(id){ return document.getElementById(id); };
+  var state = { feed: [], ideas: [], day: "", plat: "", cat: "", q: "" };
+
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function safeUrl(u){ return /^https?:\/\//i.test(u || "") ? u : ""; }
+  function plain(t){ var s = String(t || "").replace(/[#@][^\s#@]+/g,"").replace(/\s+/g," ").trim(); return s || String(t || "").trim(); }
+  function londonDay(offset){
+    var d = new Date(Date.now() - (offset || 0) * 864e5);
+    try { return new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/London",year:"numeric",month:"2-digit",day:"2-digit"}).format(d); }
+    catch(e){ return d.toISOString().slice(0,10); }
+  }
+  function dayLabel(day){
+    if (day === londonDay(0)) return "Today";
+    if (day === londonDay(1)) return "Yesterday";
+    try { return new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short",timeZone:"UTC"}).format(new Date(day + "T12:00:00Z")); } catch(e){ return day; }
+  }
+  function img(src, cls){
+    var im = el("img", cls); im.src = src; im.alt = ""; im.loading = "lazy"; im.decoding = "async"; im.referrerPolicy = "no-referrer";
+    im.addEventListener("error", function(){ im.remove(); });
+    return im;
+  }
+
+  /* ── today's videos ── */
+  function renderFeed(){
+    var reel = $("reel"), daysBox = $("days"); reel.textContent = ""; daysBox.textContent = "";
+    var days = state.feed.slice(0,7).map(function(d){ return d.day; });
+    if (!state.day || days.indexOf(state.day) < 0) state.day = days[0] || "";
+    days.forEach(function(day){
+      var b = el("button","chip",dayLabel(day)); b.type = "button"; b.setAttribute("aria-pressed", day === state.day ? "true" : "false");
+      b.addEventListener("click", function(){ state.day = day; renderFeed(); });
+      daysBox.appendChild(b);
+    });
+    var cur = state.feed.filter(function(d){ return d.day === state.day; })[0];
+    var list = cur ? cur.videos : [];
+    $("feedTitle").textContent = !state.day || state.day === londonDay(0) ? "Today's videos" : "Videos from " + dayLabel(state.day).replace(/^Yesterday$/,"yesterday");
+    if (!list.length){ $("feedNote").textContent = ""; reel.appendChild(el("div","reel-empty","The next picks arrive tomorrow morning.")); return; }
+    var late = days[0] !== londonDay(0) && state.day === days[0];
+    $("feedNote").textContent = list.length + " picks" + (late ? ". Today's haven't arrived yet; they come in each morning around 8." : ". Tap one to open the original.");
+    list.forEach(function(v){ reel.appendChild(vidCard(v)); });
+  }
+  function vidCard(v){
+    var c = el("article","vid"); c.dataset.p = v.platform || "other";
+    var plat = label(PLATFORMS, v.platform) || "Video";
+    var isVideo = v.platform === "tiktok" || v.platform === "youtube" || v.format === "video";
+    var url = safeUrl(v.url), thumb = v.thumb && (/^https:\/\//.test(v.thumb) || /^thumbs\/[\w.-]+$/.test(v.thumb)) ? v.thumb : "";
+    var a = el("a","vid-link" + (thumb ? "" : " text")); if (url) a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.setAttribute("aria-label", (isVideo ? "Watch on " : "Open on ") + plat + ": " + plain(v.title) + " (opens in a new tab)");
+    if (thumb) a.appendChild(img(thumb)); else a.appendChild(el("p","vid-quote", plain(v.title)));
+    a.appendChild(el("span","vid-badge", v.platform === "youtube" ? "Shorts" : plat));
+    if (isVideo) a.appendChild(el("span","vid-play"));
+    if (v.views) a.appendChild(el("span","vid-views", v.views));
+    c.appendChild(a);
+    if (thumb) c.appendChild(el("p","vid-title", plain(v.title)));
+    c.appendChild(el("p","vid-by", [v.creator, label(CATEGORIES, v.topic)].filter(Boolean).join(" · ")));
+    return c;
+  }
+
+  /* ── ideas ── */
+  function chips(holder, list, key){
+    [["","All"]].concat(list).forEach(function(pair){
+      var b = el("button","chip",pair[1]); b.type = "button"; b.setAttribute("aria-pressed", pair[0] === state[key] ? "true" : "false");
+      b.addEventListener("click", function(){
+        state[key] = pair[0];
+        [].forEach.call(holder.querySelectorAll(".chip"), function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        renderIdeas();
+      });
+      holder.appendChild(b);
+    });
+  }
+  chips($("fPlat"), PLATFORMS, "plat"); chips($("fCat"), CATEGORIES, "cat");
+  $("q").addEventListener("input", function(e){ state.q = e.target.value.trim().toLowerCase(); renderIdeas(); });
+  function renderIdeas(){
+    var grid = $("grid"); grid.textContent = "";
+    var list = state.ideas.filter(function(d){
+      if (state.plat && d.platform !== state.plat) return false;
+      if (state.cat && d.category !== state.cat) return false;
+      if (state.q){
+        var hay = [d.title,d.hook,d.why,d.adapt,(d.tags||[]).join(" "),label(PLATFORMS,d.platform),label(CATEGORIES,d.category)].join(" ").toLowerCase();
+        if (hay.indexOf(state.q) < 0) return false;
+      }
+      return true;
+    });
+    $("count").textContent = list.length + (list.length === 1 ? " idea" : " ideas") + (list.length !== state.ideas.length ? " of " + state.ideas.length : "");
+    if (!state.ideas.length){ var e = el("div","empty","No ideas saved yet."); grid.appendChild(e); }
+    list.forEach(function(d){ grid.appendChild(card(d)); });
+  }
+  function card(d){
+    var c = el("article","card");
+    if (d.shot && /^shots\/[\w.-]+$/.test(d.shot)){ var im = img(d.shot,"shot"); c.appendChild(im); }
+    var b = el("div","body"), meta = el("div","meta");
+    var p = el("span","plat",label(PLATFORMS,d.platform) || "Other"); p.dataset.p = d.platform || "other"; meta.appendChild(p);
+    if (d.category) meta.appendChild(el("span","tag",label(CATEGORIES,d.category)));
+    if (d.format) meta.appendChild(el("span","tag",label(FORMATS,d.format)));
+    if (STATUSES[d.status] && d.status !== "new") meta.appendChild(el("span","tag",STATUSES[d.status]));
+    b.appendChild(meta);
+    b.appendChild(el("h2",null,d.title || "Untitled idea"));
+    if (d.hook) b.appendChild(el("p","hook",d.hook));
+    var dl = el("dl");
+    if (d.why){ dl.appendChild(el("dt",null,"Why it works")); dl.appendChild(el("dd",null,d.why)); }
+    if (d.adapt){ dl.appendChild(el("dt",null,"Our version")); dl.appendChild(el("dd",null,d.adapt)); }
+    if (dl.children.length) b.appendChild(dl);
+    if (d.tags && d.tags.length) b.appendChild(el("p","tag",d.tags.map(function(t){ return "#" + t; }).join("  ")));
+    var url = safeUrl(d.url);
+    if (url){ var s = el("p","src"), a = el("a",null,"Open the original"); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer"; s.appendChild(a); b.appendChild(s); }
+    if (d.brief){ var bx = el("div","brief"); bx.appendChild(el("span","eyebrow","Post brief")); bx.appendChild(document.createTextNode(d.brief)); b.appendChild(bx); }
+    c.appendChild(b);
+    c.appendChild(el("div","foot", d.via || "Karineko team"));
+    return c;
+  }
+
+  /* ── load ── */
+  function load(path){ return fetch(path, {cache:"no-cache"}).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }); }
+  load("data/feed.json").then(function(f){
+    state.feed = (f.days || []).slice().sort(function(a,b){ return a.day < b.day ? 1 : -1; });
+    renderFeed();
+    if (f.updated){ try { $("updated").textContent = "Updated " + new Intl.DateTimeFormat("en-GB",{dateStyle:"medium",timeStyle:"short",timeZone:"Europe/London"}).format(new Date(f.updated)) + " (London)."; } catch(e){} }
+  }).catch(function(){ $("feedNote").textContent = "The videos couldn't be loaded. Refresh the page to try again."; });
+  load("data/ideas.json").then(function(list){ state.ideas = Array.isArray(list) ? list : []; renderIdeas(); })
+    .catch(function(){ $("count").textContent = "The ideas couldn't be loaded. Refresh the page to try again."; });
+})();
+</script>
+</body>
+</html>
